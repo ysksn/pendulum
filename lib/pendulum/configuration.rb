@@ -7,7 +7,7 @@ module Pendulum
     end
 
     def schedule(name, &block)
-      schedules << Schedule.new(name, &block)
+      schedules << DSL::Schedule.new(name, &block)
     end
 
     def schedules

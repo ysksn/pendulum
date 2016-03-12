@@ -1,4 +1,4 @@
-module Pendulum
+module Pendulum::DSL
   class Schedule
     attr_accessor :name
 
