@@ -13,7 +13,9 @@ module Pendulum::DSL::Output
     private
 
     def with_options(url, *options)
-      params = (options || []).map do |option|
+      params = (options || []).select do |option|
+        instance_variable_defined?("@#{option}")
+      end.map do |option|
         "#{option}=#{instance_variable_get("@#{option}")}"
       end.join('&')
       url + (params.empty? ? '' : "?#{params}")
