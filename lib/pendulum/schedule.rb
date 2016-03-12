@@ -23,6 +23,22 @@ module Pendulum
       @cron = cron
     end
 
+    def timezone(timezone)
+      @timezone = timezon
+    end
+
+    def delay(delay)
+      @delay = delay
+    end
+
+    def retry_limit(retry_limit)
+      @retry_limit = retry_limit
+    end
+
+    def type(type)
+      @type = type
+    end
+
     def to_params
       instance_variables.inject({}) do |params, v|
         params[v.to_s.delete('@').to_sym] = instance_variable_get(v)
