@@ -39,10 +39,27 @@ module Pendulum
       @type = type
     end
 
+    def priority(priority)
+      @priority = priority.is_a?(Integer) ? priority : priority_id_of(priority)
+    end
+
     def to_params
       instance_variables.inject({}) do |params, v|
         params[v.to_s.delete('@').to_sym] = instance_variable_get(v)
         params
+      end
+    end
+
+    private
+
+    def priority_id_of(name)
+      case name.to_sym
+      when :very_low  then -2
+      when :low       then -1
+      when :normal    then  0
+      when :high      then  1
+      when :very_high then  2
+      else                  0
       end
     end
   end
