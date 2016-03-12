@@ -12,7 +12,8 @@ module Pendulum
       opt.parse!(argv) rescue return usage $!
 
       begin
-        Client.new(api_key, options)
+        client = Client.new(api_key, options)
+        client.apply
       rescue
         puts $!
         return 1
