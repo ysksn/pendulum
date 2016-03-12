@@ -47,6 +47,11 @@ module Pendulum::DSL
       @result_url = url
     end
 
+    def result(type, &block)
+      result = Result.new(type, &block)
+      @result_url = result.to_url
+    end
+
     def to_params
       instance_variables.inject({}) do |params, v|
         params[v.to_s.delete('@').to_sym] = instance_variable_get(v)
