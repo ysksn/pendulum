@@ -20,5 +20,27 @@ module Pendulum::DSL::Output
       end.join('&')
       url + (params.empty? ? '' : "?#{params}")
     end
+
+    def username_and_password
+      case
+      when @username && @password
+        "#{@username}:#{@password}"
+      when @username
+        @username
+      when @password
+        ":#{@password}"
+      end
+    end
+
+    def hostname_and_port
+      case
+      when @hostname && @port
+        "#{@hostname}:#{@port}"
+      when @hostname
+        @hostname
+      when @port
+        ":#{@port}"
+      end
+    end
   end
 end

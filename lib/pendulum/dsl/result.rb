@@ -18,6 +18,8 @@ module Pendulum::DSL
       case type.to_sym
       when :treasure_data, :td
         Output::TreasureData.new
+      when :postgresql
+        Output::Postgresql.new
       end
     end
   end

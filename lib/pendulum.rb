@@ -6,6 +6,7 @@ require "pendulum/dsl/schedule"
 require "pendulum/dsl/result"
 require "pendulum/dsl/output/base"
 require "pendulum/dsl/output/treasure_data"
+require "pendulum/dsl/output/postgresql"
 require "pendulum/runner"
 
 module Pendulum
