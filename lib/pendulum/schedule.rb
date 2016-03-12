@@ -24,7 +24,7 @@ module Pendulum
     end
 
     def timezone(timezone)
-      @timezone = timezon
+      @timezone = timezone
     end
 
     def delay(delay)
@@ -41,6 +41,10 @@ module Pendulum
 
     def priority(priority)
       @priority = priority.is_a?(Integer) ? priority : priority_id_of(priority)
+    end
+
+    def result_url(url)
+      @result_url = url
     end
 
     def to_params
