@@ -1,11 +1,15 @@
 module Pendulum::DSL
   class Result
-    attr_accessor :type
+    attr_accessor :type, :output
 
     def initialize(type, &block)
       self.type = type
-      @output = output_by(type)
-      @output.instance_eval(&block) if block_given?
+      self.output = output_by(type)
+      self.output.instance_eval(&block) if block_given?
+    end
+
+    def to_url
+      output.to_url
     end
 
     private
