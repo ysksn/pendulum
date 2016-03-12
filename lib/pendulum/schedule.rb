@@ -20,7 +20,7 @@ module Pendulum
     end
 
     def cron(cron)
-      @cron = cron
+      @cron = %i(hourly daily monthly).include?(cron) ? "@#{cron}" : cron
     end
 
     def timezone(timezone)
