@@ -1,5 +1,7 @@
 module Pendulum::DSL
   class Schedule
+    include Helper
+
     attr_accessor :name
 
     def initialize(name, &block)
@@ -7,13 +9,8 @@ module Pendulum::DSL
       self.instance_eval(&block) if block_given?
     end
 
-    def database(database)
-      @database = database
-    end
-
-    def query(query)
-      @query = query
-    end
+    define_setter :database, :query, :timezone,
+                  :delay, :retry_limit, :type, :result_url
 
     def query_file(path)
       query(File.read(path))
@@ -23,28 +20,8 @@ module Pendulum::DSL
       @cron = %i(hourly daily monthly).include?(cron) ? "@#{cron}" : cron
     end
 
-    def timezone(timezone)
-      @timezone = timezone
-    end
-
-    def delay(delay)
-      @delay = delay
-    end
-
-    def retry_limit(retry_limit)
-      @retry_limit = retry_limit
-    end
-
-    def type(type)
-      @type = type
-    end
-
     def priority(priority)
       @priority = priority.is_a?(Integer) ? priority : priority_id_of(priority)
-    end
-
-    def result_url(url)
-      @result_url = url
     end
 
     def result(type, &block)

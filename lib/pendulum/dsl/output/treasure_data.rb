@@ -1,16 +1,8 @@
 module Pendulum::DSL::Output
   class TreasureData < Base
-    def database(database)
-      @database = database
-    end
+    include Pendulum::DSL::Helper
 
-    def table(table)
-      @table = table
-    end
-
-    def mode(mode)
-      @mode = mode
-    end
+    define_setter :database, :table, :mode
 
     def to_url
       url = "td://@/#{@database}/#{@table}"
