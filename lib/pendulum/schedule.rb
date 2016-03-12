@@ -15,6 +15,10 @@ module Pendulum
       @query = query
     end
 
+    def query_file(path)
+      query(File.read(path))
+    end
+
     def cron(cron)
       @cron = cron
     end
