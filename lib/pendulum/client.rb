@@ -28,6 +28,11 @@ module Pendulum
       end
     end
 
+    def export(output)
+      results = DSL::Converter.new(current_schedules).convert
+      puts results
+    end
+
     private
 
     def current_schedules
