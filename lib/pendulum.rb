@@ -1,5 +1,6 @@
 require "pendulum/version"
 require "pendulum/client"
+require "pendulum/settings"
 require "pendulum/configuration"
 require "pendulum/dsl/helper"
 require "pendulum/dsl/schedule"

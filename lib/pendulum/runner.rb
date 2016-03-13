@@ -5,17 +5,19 @@ module Pendulum
     def run(argv=ARGV)
       api_key = nil
       mode    = :apply
-      output  = 'Schedfile'
-      options = {file: 'Schedfile'}
+      options = {
+        file: 'Schedfile',
+        env:  :development
+      }
 
       opt.on('-k', '--apikey=KEY')  {|v| api_key = v }
-
-      # apply
       opt.on('-f', '--file=FILE')   {|v| options[:file] = v }
 
+      # apply
+      opt.on('-E', '--environment=ENV') {|v| options[:env]  = v }
+
       # export
-      opt.on('-e', '--export')      {    mode   = :export }
-      opt.on('-o', '--output=FILE') {|v| output = v       }
+      opt.on('-e', '--export')      { mode   = :export }
 
       opt.parse!(argv) rescue return usage $!
 
@@ -25,7 +27,7 @@ module Pendulum
         when :apply
           client.apply
         when :export
-          client.export(output)
+          client.export(options[:file])
         end
       rescue
         puts $!

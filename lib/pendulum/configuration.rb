@@ -1,6 +1,7 @@
 module Pendulum
   class Configuration
     def initialize(options={})
+      settings = Pendulum::Settings.load(options[:env])
       if file = options[:file]
         self.instance_eval(File.read(file), file)
       end
