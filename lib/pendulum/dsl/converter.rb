@@ -12,9 +12,9 @@ module Pendulum::DSL
         to_dsl(schedule)
       end.join("\n")
 
-      result[:queries] = @schedules.inject({}) do |queries, schedule|
-        queries.merge(to_query(schedule))
-      end
+      result[:queries] = @schedules.map do |schedule|
+        to_query(schedule)
+      end.compact
 
       result
     end
@@ -44,8 +44,8 @@ end
     end
 
     def to_query(schedule)
-      return {} unless schedule.query
-      {name: schedule.name, query: schedule.query}
+      return nil unless schedule.query
+      {name: "#{schedule.name}.hql", query: schedule.query}
     end
   end
 end

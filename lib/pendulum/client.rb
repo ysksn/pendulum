@@ -1,5 +1,6 @@
 require 'td'
 require 'td-client'
+require 'fileutils'
 
 module Pendulum
   class Client
@@ -29,8 +30,15 @@ module Pendulum
     end
 
     def export(output)
-      results = DSL::Converter.new(current_schedules).convert
-      puts results
+      result = DSL::Converter.new(td_client.schedules).convert
+      # schedule
+      File.write(output, result[:schedule])
+      # queries
+      query_dir = File.join(File.dirname(output), 'query')
+      make_dir(query_dir)
+      result[:queries].each do |query|
+        File.write(File.join(query_dir, query[:name]), query[:query])
+      end
     end
 
     private
@@ -53,6 +61,10 @@ module Pendulum
 
     def td_client
       @td_client ||= TreasureData::Client.new(@api_key, {ssl: true})
+    end
+
+    def make_dir(dir)
+      FileUtils.mkdir(dir) unless File.exist?(dir)
     end
   end
 end
