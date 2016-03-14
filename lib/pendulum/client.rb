@@ -15,8 +15,12 @@ module Pendulum
 
       @config.schedules.each do |schedule|
         if currents.include?(schedule.name)
-          puts "Updating schedule: #{schedule.name}"
-          update_schedule(schedule)
+          if schedule.diff(current_schedules.find{|s| s.name == schedule.name}).empty?
+            puts "No change:         #{schedule.name}"
+          else
+            puts "Updating schedule: #{schedule.name}"
+            update_schedule(schedule)
+          end
         else
           puts "Creating schedule: #{schedule.name}"
           create_schedule(schedule)
