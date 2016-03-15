@@ -1,13 +1,16 @@
+require 'highline'
+
 module Pendulum::Command
   class Apply
     class Schedule
-      attr_accessor :client, :from, :to, :dry_run, :force
-      def initialize(client, from, to, dry_run=false, force=false)
+      attr_accessor :client, :from, :to, :dry_run, :force, :color
+      def initialize(client, from, to, dry_run=false, force=false, color=false)
         self.client  = client
         self.from    = from
         self.to      = to
         self.dry_run = dry_run
         self.force   = force
+        self.color   = color
       end
 
       def apply
@@ -19,20 +22,20 @@ module Pendulum::Command
       end
 
       def create
-        puts message_with_dry_run(message_for_create)
+        puts message_for_create
         client.create_schedule(to.name, to.to_params) unless dry_run?
       end
 
       def update
-        puts message_with_dry_run(message_for_update)
-        puts message_for_diff
+        puts message_for_update
+        puts message_for_diff if has_diff?
         if force? || has_diff?
           client.update_schedule(to.name, to.to_params) unless dry_run?
         end
       end
 
       def delete
-        puts message_with_dry_run(message_for_delete)
+        puts message_for_delete
         client.update_schedule(from.name) if force? && !dry_run?
       end
 
@@ -80,22 +83,22 @@ module Pendulum::Command
       end
 
       def message_for_create
-        message_for(:create)
+        colorize message_for(:create), :cyan
       end
 
       def message_for_update
         if force? || has_diff?
-          message_for(:update)
+          colorize message_for(:update), :green
         else
-          "No change schedule: #{name}"
+          colorize "No change schedule: #{name}", :blue
         end
       end
 
       def message_for_delete
         if force?
-          message_for(:delete)
+          colorize message_for(:delete), :red
         else
-          "Undefined schedule (pass `--force` if you want to remove): #{name}"
+          colorize message_with_dry_run("Undefined schedule (pass `--force` if you want to remove): #{name}"), :yellow
         end
       end
 
@@ -105,13 +108,14 @@ module Pendulum::Command
       end
 
       def message_for(action)
-        "#{action.to_s.capitalize} schedule: #{name}"
+        message_with_dry_run "#{action.to_s.capitalize} schedule: #{name}"
       end
 
       def message_for_diff
-        masked_diff.map do |name, value|
+        message = masked_diff.map do |name, value|
           "  set #{name}=#{value}"
         end.join("\n")
+        colorize message, :green
       end
 
       def name
@@ -124,6 +128,10 @@ module Pendulum::Command
 
       def force?
         force
+      end
+
+      def color?
+        color
       end
 
       def default_params
@@ -141,6 +149,15 @@ module Pendulum::Command
 
       def result_url_changed?(from_url, to_url)
         Apply::ResultURL.new(from_url, to_url).changed?
+      end
+
+      def colorize(message, color)
+        return message unless color?
+        h.color message, color
+      end
+
+      def h
+        @h ||= HighLine.new
       end
     end
   end

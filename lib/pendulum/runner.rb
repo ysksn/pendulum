@@ -9,6 +9,7 @@ module Pendulum
       mode    = nil
       dry_run = false
       force   = false
+      color   = true
       options = {
         file:    DEFAULT_SCHEDFILE,
         env:     :development,
@@ -23,6 +24,7 @@ module Pendulum
       opt.on('-f', '--file=FILE')       {|v| options[:file] = v }
       opt.on('',   '--dry-run')         {    dry_run = true     }
       opt.on('',   '--force')           {    force   = true     }
+      opt.on('',   '--no-color')        {    color   = false    }
 
       # export
       opt.on('-e', '--export')      {    mode   = :export }
@@ -35,7 +37,7 @@ module Pendulum
         client = Client.new(api_key, options)
         case mode
         when :apply
-          client.apply(dry_run: dry_run, force: force)
+          client.apply(dry_run: dry_run, force: force, color: color)
         when :export
           client.export(output)
         end

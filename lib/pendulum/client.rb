@@ -10,13 +10,14 @@ module Pendulum
       @config.instance_eval(&block) if block_given?
     end
 
-    def apply(dry_run: false, force: false)
+    def apply(dry_run: false, force: false, color: false)
       Pendulum::Command::Apply.new(
         td_client,
         current_schedules,
         @config.schedules,
         dry_run,
         force,
+        color,
       ).execute
     end
 
