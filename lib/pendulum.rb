@@ -9,6 +9,9 @@ require "pendulum/dsl/output/base"
 require "pendulum/dsl/output/treasure_data"
 require "pendulum/dsl/output/postgresql"
 require "pendulum/dsl/converter"
+require "pendulum/command/apply"
+require "pendulum/command/apply/result_url"
+require "pendulum/command/apply/schedule"
 require "pendulum/runner"
 
 module Pendulum
