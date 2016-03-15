@@ -68,6 +68,17 @@ module Pendulum::Command
                   end
       end
 
+      def masked_diff
+        return diff unless diff.key?(:result_url)
+
+        masked = diff.dup
+        uri = URI.parse(masked[:result_url])
+        uri.password = '***'
+        masked[:result_url] = uri.to_s
+
+        masked
+      end
+
       def message_for_create
         message_for(:create)
       end
@@ -98,7 +109,7 @@ module Pendulum::Command
       end
 
       def message_for_diff
-        diff.map do |name, value|
+        masked_diff.map do |name, value|
           "  set #{name}=#{value}"
         end.join("\n")
       end

@@ -9,11 +9,15 @@ module Pendulum::Command
 
       def changed?
         from_uri = URI.parse(from)
-        to_uri   = URI.parse(to)
-        to_uri.password = '***'
+        to_uri   = mask(URI.parse(to))
 
         uri_without_query(from_uri) != uri_without_query(to_uri) ||
           query_hash(from_uri) != query_hash(to_uri)
+      end
+
+      def mask(uri)
+        uri.password = '***'
+        uri
       end
 
       private
