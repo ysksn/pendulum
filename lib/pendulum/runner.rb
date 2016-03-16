@@ -1,8 +1,8 @@
 require 'optparse'
 
-DEFAULT_SCHEDFILE = 'Schedfile'
 
 module Pendulum
+  DEFAULT_SCHEDFILE = 'Schedfile'
   class Runner
     def run(argv=ARGV)
       api_key = nil
