@@ -119,7 +119,7 @@ module Pendulum::Command
       end
 
       def name
-        from.name || to.name
+        (from && from.name) || (to && to.name)
       end
 
       def dry_run?
