@@ -27,8 +27,11 @@ module Pendulum
       opt.on('',   '--no-color')        {    color   = false    }
 
       # export
-      opt.on('-e', '--export')      {    mode   = :export }
-      opt.on('-o', '--output=FILE') {|v| output = v       }
+      opt.on('-e', '--export') do
+        mode = :export
+        options.delete(:file)
+      end
+      opt.on('-o', '--output=FILE') {|v| output = v }
 
       opt.parse!(argv) rescue return usage $!
       return usage if (api_key.nil? || mode.nil?)
