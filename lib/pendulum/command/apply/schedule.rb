@@ -62,7 +62,7 @@ module Pendulum::Command
 
         @diff ||= begin
                     default_params.merge(to.to_params).select do |k, v|
-                      if k == :result_url
+                      if k == :result
                         result_url_changed?(from.result_url, v)
                       else
                         v != from.send(k)
@@ -72,12 +72,12 @@ module Pendulum::Command
       end
 
       def masked_diff
-        return diff unless diff.key?(:result_url)
+        return diff unless diff.key?(:result)
 
         masked = diff.dup
-        uri = URI.parse(masked[:result_url])
+        uri = URI.parse(masked[:result])
         uri.password = '***' if uri.user
-        masked[:result_url] = uri.to_s
+        masked[:result] = uri.to_s
 
         masked
       end
@@ -143,7 +143,7 @@ module Pendulum::Command
           cron:        nil,
           timezone:    'Asia/Tokyo', # TODO: require timezone.
           delay:       0,
-          result_url:  ''
+          result:      ''
         }
       end
 

@@ -10,7 +10,7 @@ module Pendulum::DSL
     end
 
     define_setter :database, :query, :timezone,
-                  :delay, :retry_limit, :type, :result_url
+                  :delay, :retry_limit, :type
 
     def query_file(path)
       query(File.read(path))
@@ -24,9 +24,13 @@ module Pendulum::DSL
       @priority = priority.is_a?(Integer) ? priority : priority_id_of(priority)
     end
 
+    def result_url(url)
+      @result = url
+    end
+
     def result(type, &block)
       result = Result.new(type, &block)
-      @result_url = result.to_url
+      @result = result.to_url
     end
 
     def to_params
