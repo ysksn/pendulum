@@ -36,7 +36,7 @@ module Pendulum::Command
 
       def delete
         puts message_for_delete
-        client.update_schedule(from.name) if force? && !dry_run?
+        client.delete_schedule(from.name) if force? && !dry_run?
       end
 
       private
