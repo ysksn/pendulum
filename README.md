@@ -1,8 +1,63 @@
 # Pendulum
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/pendulum`. To experiment with that code, run `bin/console` for an interactive prompt.
+Pendulum is a tool to manage Treasure Data scheduled jobs.
 
-TODO: Delete this and the text above, and describe your gem
+It defines the state of Treasure Data scheduled jobs using DSL, and updates the jobs according as DSL.
+
+## Usage
+
+```sh
+# Export from Treasure Data
+$ pendulum --apikey='...' -e -o Schedfile
+
+# Update Schedfile
+$ vi Schedfile
+
+# Apply scheduled jobs
+$ pendulum --apikey='...' -a --dry-run
+$ pendulum --apikey='...' -a
+```
+
+## Schedfile
+
+```rb
+schedule 'test-scheduled-job' do
+  database   'db_name'
+  query      'select time from access;'
+  retry_limit 0
+  priority    :normal
+  cron        '30 0 * * *'
+  timezone    'Asia/Tokyo'
+  delay       0
+  result_url  'td://@/db_name/table_name'
+end
+```
+
+#### query_file
+
+If your query is long, you can specify `query_file`.
+
+```rb
+query_file 'queries/test-scheduled-job.hql'
+```
+
+#### result
+
+You can use `result` DSL instead of `result_url`.
+
+```rb
+schedule 'test-scheduled-job' do
+  database   'db_name'
+  ...
+  result :td do
+    database 'db_name'
+    table    'table_name'
+  end
+end
+```
+
+Now, Pendulum supports `td` and `postgresql` result export.
+If you want to use other result export, please send pull request :smile:
 
 ## Installation
 
@@ -20,10 +75,6 @@ Or install it yourself as:
 
     $ gem install pendulum
 
-## Usage
-
-TODO: Write usage instructions here
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
@@ -32,7 +83,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/pendulum.
+Bug reports and pull requests are welcome on GitHub at https://github.com/monochromegane/pendulum.
 
 
 ## License
