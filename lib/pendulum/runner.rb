@@ -53,7 +53,7 @@ module Pendulum
 
     def usage(err=nil)
       puts err if err
-      puts @opt.help
+      puts opt.help
       err ? 1 : 0
     end
 
