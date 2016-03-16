@@ -24,20 +24,20 @@ module Pendulum::DSL
     def to_dsl(schedule)
       ERB.new(<<-EOS, nil, '-').result(binding)
 schedule '<%= schedule.name %>' do
-  database:   '<%= schedule.database %>'
+  database    '<%= schedule.database %>'
 <% if schedule.query -%>
-  query_file: 'query/<%= schedule.name %>.hql'
-  # type:     :hive # FIXME: Treasure Data schedule api dosen't contain type result.
-  retry:      <%= schedule.retry_limit %>
-  priority:   <%= schedule.priority %>
+  query_file 'queries/<%= schedule.name %>.hql'
+  # type     :hive # FIXME: Treasure Data schedule api dosen't contain type result.
+  retry_limit <%= schedule.retry_limit %>
+  priority    <%= schedule.priority %>
 <% end -%>
 <% if schedule.cron -%>
-  cron:       '<%= schedule.cron %>'
-  timezone:   '<%= schedule.timezone %>'
-  delay:      <%= schedule.delay %>
+  cron        '<%= schedule.cron %>'
+  timezone    '<%= schedule.timezone %>'
+  delay       <%= schedule.delay %>
 <% end -%>
 <% if schedule.result_url != '' -%>
-  result_url: '<%= schedule.result_url %>'
+  result_url  '<%= schedule.result_url %>'
 <% end -%>
 end
       EOS
