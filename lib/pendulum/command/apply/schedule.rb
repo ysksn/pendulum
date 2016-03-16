@@ -90,7 +90,7 @@ module Pendulum::Command
         if force? || has_diff?
           colorize message_for(:update), :green
         else
-          colorize "No change schedule: #{name}", :blue
+          colorize message_with_dry_run("No change schedule: #{name}"), :blue
         end
       end
 
