@@ -16,7 +16,7 @@ module Pendulum::Command
       end
 
       def mask(uri)
-        uri.password = '***'
+        uri.password = '***' if uri.user
         uri
       end
 
