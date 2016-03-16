@@ -26,7 +26,7 @@ module Pendulum
       # schedule
       File.write(output, result[:schedule])
       # queries
-      query_dir = File.join(File.dirname(output), 'query')
+      query_dir = File.join(File.dirname(output), 'queries')
       make_dir(query_dir)
       result[:queries].each do |query|
         File.write(File.join(query_dir, query[:name]), query[:query])
