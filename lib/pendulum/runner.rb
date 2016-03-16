@@ -42,7 +42,7 @@ module Pendulum
           client.export(output)
         end
       rescue
-        puts $!
+        $stderr.puts $!
         return 1
       end
 
