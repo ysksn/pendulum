@@ -76,7 +76,7 @@ module Pendulum::Command
 
         masked = diff.dup
         uri = URI.parse(masked[:result_url])
-        uri.password = '***'
+        uri.password = '***' if uri.user
         masked[:result_url] = uri.to_s
 
         masked
