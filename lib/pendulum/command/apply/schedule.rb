@@ -148,7 +148,7 @@ module Pendulum::Command
       end
 
       def result_url_changed?(from_url, to_url)
-        Apply::ResultURL.new(from_url, to_url).changed?
+        Apply::ResultURL.new(client, from_url, to_url).changed?
       end
 
       def colorize(message, color)

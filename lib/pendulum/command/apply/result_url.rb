@@ -1,15 +1,16 @@
 module Pendulum::Command
   class Apply
     class ResultURL
-      attr_accessor :from, :to
-      def initialize(from, to)
-        self.from = from
-        self.to   = to
+      attr_accessor :client, :from, :to
+      def initialize(client, from, to)
+        self.client = client
+        self.from   = from
+        self.to     = to
       end
 
       def changed?
-        from_uri = URI.parse(from)
-        to_uri   = mask(URI.parse(to))
+        from_uri = to_uri(from)
+        to_uri   = mask(to_uri(to))
 
         uri_without_query(from_uri) != uri_without_query(to_uri) ||
           query_hash(from_uri) != query_hash(to_uri)
@@ -28,6 +29,28 @@ module Pendulum::Command
 
       def query_hash(uri)
         Hash[URI::decode_www_form(uri.query || '')]
+      end
+
+      def to_uri(url)
+        return URI.parse(url) if url.include?('://')
+
+        # use result
+        name, table = url.split(':', 2)
+
+        result = result_by(name)
+        return URI.parse(url) unless result
+
+        uri = URI.parse(result.url)
+        uri.path += "/#{table}"
+        uri
+      end
+
+      def results
+        @results ||= client.results
+      end
+
+      def result_by(name)
+        results.find{|r| name == r.name}
       end
     end
   end
