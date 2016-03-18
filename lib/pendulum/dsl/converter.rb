@@ -26,8 +26,8 @@ module Pendulum::DSL
 schedule '<%= schedule.name %>' do
   database    '<%= schedule.database %>'
 <% if schedule.query -%>
-  query_file 'queries/<%= schedule.name %>.hql'
-  # type     :hive # FIXME: Treasure Data schedule api dosen't contain type result.
+  query_file  'queries/<%= schedule.name %>.hql'
+  # type      :hive # FIXME: Treasure Data schedule api dosen't contain type result.
   retry_limit <%= schedule.retry_limit %>
   priority    <%= schedule.priority %>
 <% end -%>
