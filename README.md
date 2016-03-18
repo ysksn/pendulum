@@ -1,4 +1,4 @@
-# Pendulum
+# Pendulum [![Build Status](https://travis-ci.org/monochromegane/pendulum.svg?branch=master)](https://travis-ci.org/monochromegane/pendulum)
 
 Pendulum is a tool to manage Treasure Data scheduled jobs.
 
@@ -22,14 +22,14 @@ $ pendulum --apikey='...' -a
 
 ```rb
 schedule 'test-scheduled-job' do
-  database   'db_name'
-  query      'select time from access;'
+  database    'db_name'
+  query       'select time from access;'
   retry_limit 0
   priority    :normal
   cron        '30 0 * * *'
   timezone    'Asia/Tokyo'
   delay       0
-  result_url  'td://@/db_name/table_name'
+  result      'td://@/db_name/table_name'
 end
 ```
 
