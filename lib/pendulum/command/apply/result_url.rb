@@ -16,12 +16,12 @@ module Pendulum::Command
           query_hash(from_uri) != query_hash(to_uri)
       end
 
+      private
+
       def mask(uri)
         uri.password = '***' if uri.user
         uri
       end
-
-      private
 
       def uri_without_query(uri)
         uri.to_s.split('?').first
@@ -32,7 +32,7 @@ module Pendulum::Command
       end
 
       def to_uri(url)
-        return URI.parse(url) if url.include?('://')
+        return URI.parse(url) if ( url.empty? || url.include?('://') )
 
         # use result
         name, table = url.split(':', 2)

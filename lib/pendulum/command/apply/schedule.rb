@@ -21,6 +21,8 @@ module Pendulum::Command
         end
       end
 
+      private
+
       def create
         puts message_for_create
         client.create_schedule(to.name, to.to_params) unless dry_run?
@@ -38,8 +40,6 @@ module Pendulum::Command
         puts message_for_delete
         client.delete_schedule(from.name) if force? && !dry_run?
       end
-
-      private
 
       def will_create?
         !from && to
