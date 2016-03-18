@@ -29,7 +29,7 @@ schedule 'test-scheduled-job' do
   cron        '30 0 * * *'
   timezone    'Asia/Tokyo'
   delay       0
-  result      'td://@/db_name/table_name'
+  result_url  'td://@/db_name/table_name'
 end
 ```
 
