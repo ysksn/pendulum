@@ -1,6 +1,36 @@
 describe Pendulum::DSL::Schedule do
   let(:dsl) { described_class.new('spec') }
 
+  describe '#to_params' do
+    subject { dsl.to_params }
+
+    context 'when object has only variable @name' do
+      it { is_expected.to eql(name: 'spec') }
+    end
+
+    context 'when object has variables ohter than @name' do
+      before(:each) { dsl.instance_variable_set(key, value) }
+
+      context '@cron is set' do
+        let(:key) { :@cron }
+        let(:value) { '*' }
+        it { is_expected.to eql(name: 'spec', cron: '*') }
+      end
+
+      context '@priority is set' do
+        let(:key) { :@priority }
+        let(:value) { 0 }
+        it { is_expected.to eql(name: 'spec', priority: 0) }
+      end
+
+      context '@result is set' do
+        let(:key) { :@result }
+        let(:value) { 'url' }
+        it { is_expected.to eql(name: 'spec', result: 'url') }
+      end
+    end
+  end
+
   describe '#cron' do
     before  { dsl.cron cron }
     subject { dsl.to_params[:cron] }
