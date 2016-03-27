@@ -31,5 +31,13 @@ module Pendulum::DSL::Output
         ":#{y}"
       end
     end
+
+    def username_and_password
+      x_and_y(@username, @password)
+    end
+
+    def hostname_and_port
+      x_and_y(@hostname, @port)
+    end
   end
 end
