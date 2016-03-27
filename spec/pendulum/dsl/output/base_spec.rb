@@ -20,6 +20,11 @@ describe Pendulum::DSL::Output::Base do
     let(:y) { 'thing' }
   end
 
+  shared_context 'set first and second options' do
+    let(:first_option) { :username }
+    let(:second_option) { :password }
+  end
+
   describe '::initialize' do
     subject { dsl.instance_variables }
 
@@ -82,6 +87,58 @@ describe Pendulum::DSL::Output::Base do
     it 'calls x_and_y' do
       expect(dsl).to receive(:x_and_y).with(x, y).once
       dsl.send(:hostname_and_port)
+    end
+  end
+
+  describe '#with_options' do
+    include_context 'set @username and @password'
+    include_context 'set x and y'
+    include_context 'set first and second options'
+
+    let(:url) { 'https://pendulum.com' }
+    subject { dsl.send(:with_options, url, first_option, second_option) }
+
+    it { is_expected.to eq 'https://pendulum.com?username=any&password=thing' }
+  end
+
+  describe '#select_options' do
+    subject { dsl.send(:select_options, options) }
+
+    context 'when options are nil' do
+      let(:options) { nil }
+      it { is_expected.to eq [] }
+    end
+
+    context 'when options are truthy' do
+      context 'but not defined as instance variable' do
+        let(:options) { [:cat, :dog, :bird] }
+        it { is_expected.to eq [] }
+      end
+
+      context 'defined as instance variable' do
+        include_context 'set @username and @password'
+        include_context 'set x and y'
+        include_context 'set first and second options'
+        let(:options) { [first_option, second_option, :hoge] }
+        it { is_expected.to eq [:username, :password] }
+      end
+    end
+  end
+
+  describe '#generate_query_parameters' do
+    subject { dsl.send(:generate_query_parameters, options) }
+
+    context 'when options are []' do
+      let(:options) { [] }
+      it { is_expected.to eq '' }
+    end
+
+    context 'when options are [:username, :password]' do
+      include_context 'set @username and @password'
+      include_context 'set x and y'
+      include_context 'set first and second options'
+      let(:options) { [first_option, second_option] }
+      it { is_expected.to eq 'username=any&password=thing' }
     end
   end
 end
